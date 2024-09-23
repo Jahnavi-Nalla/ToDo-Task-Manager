@@ -2,6 +2,8 @@ const taskInput = document.getElementById('task-input');
 const addTaskBtn = document.getElementById('add-task-btn');
 const taskList = document.getElementById('task-list');
 
+addTaskBtn.addEventListener('click', addTask);
+
 // Function to get tasks from localStorage
 function getTasksFromStorage() {
     const tasks = localStorage.getItem('tasks');
@@ -21,24 +23,57 @@ window.addEventListener('load', function () {
     });
 });
 
+function editTask(event) {
+    let taskListItem = event.target.parentNode;
+    let taskSpan = taskListItem.querySelector('span');
+    let task = taskSpan.textContent;
+
+    taskInput.value = task;
+    addTaskBtn.textContent = 'Update Task';
+    addTaskBtn.removeEventListener('click', addTask);
+    addTaskBtn.addEventListener('click', function() {
+        updateTask(taskListItem, taskSpan);
+    });
+}
+
+function updateTask(taskListItem, taskSpan) {
+    let updatedTask = taskInput.value.trim();
+    if (updatedTask) {
+        taskSpan.textContent = updatedTask;
+        addTaskBtn.textContent = 'Add Task';
+        addTaskBtn.removeEventListener('click', updateTask);
+        addTaskBtn.addEventListener('click', addTask);
+        taskInput.value = '';
+    }
+}
+
+function deleteTask(event) {
+    let taskListItem = event.target.parentNode;
+    taskList.removeChild(taskListItem);
+    removeTaskFromStorage(taskListItem.querySelector('span').textContent);
+}
+
 // Function to add a task to the list
 function addTaskToList(taskText) {
     const li = document.createElement('li');
-    li.textContent = taskText;
+    
+    li.innerHTML = `
+        <span>${taskText}</span>
+       <button class="edit-btn">&#9998;</button>
+        <button class="delete-btn">&#10006;</button>
+    `;
 
-    const deleteBtn = document.createElement('button');
-    deleteBtn.textContent = 'Delete';
-    deleteBtn.addEventListener('click', function () {
-        taskList.removeChild(li);
-        removeTaskFromStorage(taskText);
-    });
+    const editBtn = li.querySelector('.edit-btn');
+    const deleteBtn = li.querySelector('.delete-btn');
 
-    li.appendChild(deleteBtn);
+    editBtn.addEventListener('click', editTask);
+    deleteBtn.addEventListener('click', deleteTask);
+
     taskList.appendChild(li);
 }
 
 // Add new task
-addTaskBtn.addEventListener('click', function () {
+function addTask() {
     const taskText = taskInput.value.trim();
     if (taskText === '') {
         alert('Task cannot be empty!');
@@ -53,7 +88,7 @@ addTaskBtn.addEventListener('click', function () {
     saveTasksToStorage(tasks);
 
     taskInput.value = ''; // Clear input after adding task
-});
+}
 
 // Function to remove task from localStorage
 function removeTaskFromStorage(taskText) {
