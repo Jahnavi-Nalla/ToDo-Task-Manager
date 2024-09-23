@@ -28,10 +28,34 @@ ul {
     padding: 0;
 }
 
+/* Ensure the list items use flexbox to manage spacing */
+/* Styling for the task item list */
 li {
-    background-color: #ececec;
-    padding: 10px;
-    margin: 5px 0;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px; /* Optional spacing between task items */
+}
+
+/* Container for the buttons */
+li div {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;/* Removes the gap between buttons */
+}
+
+/* Styling for edit and delete buttons */
+.edit-btn, .delete-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 0;
+    margin: 0;
+    display: inline-flex;
+}
+
+/* Optional hover effect */
+.edit-btn:hover, .delete-btn:hover {
+    color: #007BFF;
 }
