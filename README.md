@@ -6,3 +6,4 @@ A simple ToDo Task Manager to add, delete, and manage tasks.
 
 - Add new tasks
 - Delete existing tasks
+- Editing Tasks
