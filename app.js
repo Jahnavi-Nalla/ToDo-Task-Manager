@@ -89,6 +89,12 @@ function addTask() {
 
     taskInput.value = ''; // Clear input after adding task
 }
+document.getElementById('clear-all-btn').addEventListener('click', () => {
+    // Clear the task list here
+    // For example, if you're using a <ul> element to display tasks:
+    const taskList = document.querySelector('ul');
+    taskList.innerHTML = '';
+});
 
 // Function to remove task from localStorage
 function removeTaskFromStorage(taskText) {
